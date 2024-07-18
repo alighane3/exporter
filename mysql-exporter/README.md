@@ -86,3 +86,7 @@ nano prometheus.yml
         labels:
           server: node2
 ```
+## - grafana dashboard
+import json dashboard to grafana:
+![image](https://github.com/user-attachments/assets/15012bd8-6920-48e2-84bd-e237cee42bf4)
+
