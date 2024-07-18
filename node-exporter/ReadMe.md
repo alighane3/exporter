@@ -66,5 +66,7 @@ nano prometheus.yml
 ```
 ## - grafana dashboard
 import json dashboard to grafana:
+![image](https://github.com/user-attachments/assets/07bf2272-8868-42fc-9145-6b9a6ef45735)
+![image](https://github.com/user-attachments/assets/f6991d4b-6ac8-4300-9a5d-ca2eeb39af59)
 
 
