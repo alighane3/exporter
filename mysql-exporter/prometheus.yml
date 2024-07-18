@@ -1,0 +1,8 @@
+  - job_name: 'mysql'
+    static_configs:
+      - targets: ['node1-ip:9104']
+        labels:
+          server: node1
+      - targets: ['node2-ip:9104']
+        labels:
+          server: node2
