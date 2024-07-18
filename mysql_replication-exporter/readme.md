@@ -1,5 +1,5 @@
 # mysql replication exporter
-1. in replication server.             
+## 1. in replication server.             
 - install dependencies:
 ```
    sudo apt update
@@ -113,7 +113,7 @@ systemctl enable mysql_replication-status.service
 curl http://localhost:9105/metrics
 ```
 
-2. prometheus config.
+## 2. prometheus config.
 -  add below code to prometheus.yml:
 ```
   - job_name: 'mysql-rep'
@@ -123,3 +123,6 @@ curl http://localhost:9105/metrics
         labels:
           server: replica-server
 ```
+
+## 3. import json dashboard to grafana:
+![image](https://github.com/user-attachments/assets/04b6743a-9588-4b1e-8523-e9e3757b17c7)
