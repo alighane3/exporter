@@ -1,0 +1,4 @@
+  - job_name: 'supervisor'
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['<exporter-server-ip>:9200']
