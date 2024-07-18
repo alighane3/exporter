@@ -1,2 +1,0 @@
-# exporter
-prometheus exporter
