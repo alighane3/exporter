@@ -1,0 +1,17 @@
+  - job_name: 'blackbox'
+    metrics_path: /probe
+    params:
+      module: [http_2xx]  # Look for a HTTP 200 response.
+    static_configs:
+      - targets:
+          - https://website1.com
+          - https://website2.com:8093
+          - http://website3.com
+          - http://website4.com:8523
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: <node_exporter-server-ip>:9115
