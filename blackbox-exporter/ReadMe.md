@@ -6,6 +6,7 @@ Create blackbox_exporter user
 ```
 useradd --no-create-home --shell /bin/false blackbox_exporter
 ```
+
 install blackbox exporter
 ```
 cd ~
@@ -18,23 +19,12 @@ c5d8ba7d91101524fa7c3f5e17256d467d44d5e1d243e251fd795e0ab4a83605  blackbox_expor
 tar xvf blackbox_exporter-0.12.0.linux-amd64.tar.gz
 mv ./blackbox_exporter-0.12.0.linux-amd64/blackbox_exporter /usr/local/bin
 chown blackbox_exporter:blackbox_exporter /usr/local/bin/blackbox_exporter
+mkdir -p /etc/blackbox_exporter
+mv ./blackbox_exporter-0.12.0.linux-amd64/blackbox.yml /etc/blackbox_exporter/
+chown -R blackbox_exporter:blackbox_exporter /etc/blackbox_exporter
 rm -rf ~/blackbox_exporter-0.12.0.linux-amd64.tar.gz ~/blackbox_exporter-0.12.0.linux-amd64
+```
 
-mkdir /etc/blackbox_exporter
-chown blackbox_exporter:blackbox_exporter /etc/blackbox_exporter
-touch /etc/blackbox_exporter/blackbox.yml
-chown blackbox_exporter:blackbox_exporter /etc/blackbox_exporter/blackbox.yml
-```
-add below lines to <b>/etc/blackbox_exporter/blackbox.yml</B>
-```
-modules:
-  http_2xx:
-    prober: http
-    timeout: 5s
-    http:      
-      valid_status_codes: []
-      method: GET
-```
 make a service:
 add below lines to <B>/etc/systemd/system/blackbox_exporter.service</B>
 ```
@@ -55,7 +45,7 @@ WantedBy=multi-user.target
 
 Run and check service:
 ```
-chmod 664 /lib/systemd/system/mysqld_exporter.service
+chmod 664 /etc/systemd/system/blackbox_exporter.service
 systemctl daemon-reload
 systemctl start blackbox_exporter
 systemctl status blackbox_exporter
@@ -68,8 +58,8 @@ firewall-cmd --reload
 ```
 Verify blackbox Exporter is Running:
 ```
-http://<node_exporter-server-ip>:9115/metrics
-http://<node_exporter-server-ip>:9115/probe
+curl http://127.0.0.1:9115/metrics
+curl http://127.0.0.1:9115/probe?module=icmp&target=127.0.0.1
 ```
 
 ## - prometheus config
@@ -92,6 +82,22 @@ nano prometheus.yml
         target_label: instance
       - target_label: __address__
         replacement: <node_exporter-server-ip>:9115
+
+  - job_name: 'blackbox_icmp'
+    metrics_path: /probe
+    params:
+      module: [icmp]
+    static_configs:
+      - targets:
+        - <target-blackbox-server-ip>
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: <target-blackbox-server-ip>:9115
+
 ```
 ## - grafana dashboard
 import json dashboard to grafana:
