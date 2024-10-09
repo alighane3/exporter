@@ -16,6 +16,7 @@ and get go app
 ```
 curl http://127.0.0.1:9001/RPC2
 git clone https://github.com/salimd/supervisord_exporter.git
+cd supervisord_exporter
 go build
 
 mkdir -p /etc/supervisor/logs/
